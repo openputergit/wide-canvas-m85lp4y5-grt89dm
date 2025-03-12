@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Performance Prediction</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'teal-primary': '#4AA3A3',
+            'teal-dark': '#3A8585',
+          },
+          boxShadow: {
+            'neubrutalism': '5px 5px 0 0 rgba(0, 0, 0, 0.9)',
+          }
+        },
+      },
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background-color: #F7F7F7;
+    }
+    
+    .neubrutalism {
+      border: 3px solid black;
+      box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.9);
+      transition: all 0.2s ease-in-out;
+    }
+    
+    .neubrutalism:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 7px 7px 0 0 rgba(0, 0, 0, 0.9);
+    }
+    
+    .neubrutalism-button {
+      border: 2px solid black;
+      box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 0.9);
+      transition: all 0.1s ease-in-out;
+    }
+    
+    .neubrutalism-button:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 4px 4px 0 0 rgba(0, 0, 0, 0.9);
+    }
+    
+    .neubrutalism-button:active {
+      transform: translate(1px, 1px);
+      box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.9);
+    }
+
+    .chart-container {
+      height: 300px;
+      position: relative;
+    }
+  </style>
+</head>
+<body>
+  <div class="min-h-screen">
+    <!-- Header -->
+    <header class="bg-teal-primary text-white p-4 neubrutalism mb-6">
+      <div class="container mx-auto flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+          <i class="bi bi-mortarboard-fill text-3xl"></i>
+          <h1 class="text-2xl font-bold">EduPredict</h1>
+        </div>
+        <nav>
+          <ul class="flex space-x-4">
+            <li><a href="#" class="hover:underline font-medium">Dashboard</a></li>
+            <li><a href="#" class="hover:underline font-medium">Students</a></li>
+            <li><a href="#" class="hover:underline font-medium">Analytics</a></li>
+            <li><a href="#" class="hover:underline font-medium">Settings</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="container mx-auto px-4">
+      <div class="mb-8">
+        <h2 class="text-3xl font-bold mb-4">Student Performance Prediction</h2>
+        <p class="text-gray-700 mb-6">Predict student academic performance and behavior to create personalized educational pathways.</p>
+        
+        <!-- Input Form -->
+        <div class="neubrutalism bg-teal-primary text-white p-6 mb-8">
+          <h3 class="text-xl font-bold mb-4">Input Student Data</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block mb-2 font-bold" for="student-id">Student ID</label>
+              <input type="text" id="student-id" class="w-full p-2 text-black neubrutalism" placeholder="Enter student ID">
+            </div>
+            <div>
+              <label class="block mb-2 font-bold" for="grade-level">Grade Level</label>
+              <select id="grade-level" class="w-full p-2 text-black neubrutalism">
+                <option value="">Select grade</option>
+                <option value="6">6th Grade</option>
+                <option value="7">7th Grade</option>
+                <option value="8">8th Grade</option>
+                <option value="9">9th Grade</option>
+                <option value="10">10th Grade</option>
+                <option value="11">11th Grade</option>
+                <option value="12">12th Grade</option>
+              </select>
+            </div>
+            <div>
+              <label class="block mb-2 font-bold" for="attendance">Attendance Rate (%)</label>
+              <input type="number" id="attendance" min="0" max="100" class="w-full p-2 text-black neubrutalism" placeholder="Enter attendance rate">
+            </div>
+            <div>
+              <label class="block mb-2 font-bold" for="homework-completion">Homework Completion (%)</label>
+              <input type="number" id="homework-completion" min="0" max="100" class="w-full p-2 text-black neubrutalism" placeholder="Enter homework completion">
+            </div>
+            <div>
+              <label class="block mb-2 font-bold" for="previous-gpa">Previous GPA</label>
+              <input type="number" id="previous-gpa" min="0" max="4" step="0.01" class="w-full p-2 text-black neubrutalism" placeholder="Enter previous GPA">
+            </div>
+            <div>
+              <label class="block mb-2 font-bold" for="behavior-incidents">Behavior Incidents</label>
+              <input type="number" id="behavior-incidents" min="0" class="w-full p-2 text-black neubrutalism" placeholder="Enter number of incidents">
+            </div>
+            <div>
+              <label class="block mb-2 font-bold" for="learning-style">Learning Style</label>
+              <select id="learning-style" class="w-full p-2 text-black neubrutalism">
+                <option value="">Select learning style</option>
+                <option value="visual">Visual</option>
+                <option value="auditory">Auditory</option>
+                <option value="reading">Reading/Writing</option>
+                <option value="kinesthetic">Kinesthetic</option>
+              </select>
+            </div>
+            <div>
+              <label class="block mb-2 font-bold" for="extra-curricular">Extracurricular Activities</label>
+              <select id="extra-curricular" class="w-full p-2 text-black neubrutalism">
+                <option value="">Select level</option>
+                <option value="none">None</option>
+                <option value="low">Low Participation</option>
+                <option value="medium">Medium Participation</option>
+                <option value="high">High Participation</option>
+              </select>
+            </div>
+          </div>
+          <div class="mt-6">
+            <button id="predict-button" class="neubrutalism-button bg-white text-teal-primary px-6 py-3 font-bold text-lg">
+              Predict Performance
+            </button>
+          </div>
+        </div>
+        
+        <!-- Prediction Results -->
+        <div id="prediction-results" class="hidden">
+          <div class="neubrutalism bg-white p-6 mb-8">
+            <h3 class="text-xl font-bold mb-4">Prediction Results</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="neubrutalism bg-yellow-100 p-4">
+                <h4 class="font-bold mb-2">Academic Prediction</h4>
+                <div class="flex items-center mb-2">
+                  <div class="w-1/3 font-medium">Predicted GPA:</div>
+                  <div class="w-2/3 font-bold text-lg" id="predicted-gpa">3.5</div>
+                </div>
+                <div class="flex items-center mb-2">
+                  <div class="w-1/3 font-medium">Risk Level:</div>
+                  <div class="w-2/3">
+                    <span id="risk-level" class="font-bold px-2 py-1 bg-green-500 text-white neubrutalism-button">Low Risk</span>
+                  </div>
+                </div>
+                <div class="flex items-center">
+                  <div class="w-1/3 font-medium">Confidence:</div>
+                  <div class="w-2/3 font-bold" id="confidence-score">85%</div>
+                </div>
+              </div>
+
+              <div class="neubrutalism bg-blue-100 p-4">
+                <h4 class="font-bold mb-2">Behavioral Prediction</h4>
+                <div class="flex items-center mb-2">
+                  <div class="w-1/3 font-medium">Engagement:</div>
+                  <div class="w-2/3 font-bold" id="engagement-level">High</div>
+                </div>
+                <div class="flex items-center mb-2">
+                  <div class="w-1/3 font-medium">Dropout Risk:</div>
+                  <div class="w-2/3 font-bold" id="dropout-risk">5%</div>
+                </div>
+                <div class="flex items-center">
+                  <div class="w-1/3 font-medium">Attendance Trend:</div>
+                  <div class="w-2/3 font-bold" id="attendance-trend">Stable</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6">
+              <h4 class="font-bold mb-4">Performance Breakdown</h4>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="neubrutalism bg-gray-100 p-4">
+                  <h5 class="font-bold mb-2">Subject Performance</h5>
+                  <div class="chart-container" id="subject-chart">
+                    <div class="space-y-4">
+                      <div>
+                        <div class="flex justify-between mb-1">
+                          <span>Math</span>
+                          <span>87%</span>
+                        </div>
+                        <div class="h-4 neubrutalism bg-gray-200">
+                          <div class="h-full bg-teal-primary" style="width: 87%"></div>
+                        </div>
+                      </div>
+                      <div>
+                        <div class="flex justify-between mb-1">
+                          <span>Science</span>
+                          <span>82%</span>
+                        </div>
+                        <div class="h-4 neubrutalism bg-gray-200">
+                          <div class="h-full bg-teal-primary" style="width: 82%"></div>
+                        </div>
+                      </div>
+                      <div>
+                        <div class="flex justify-between mb-1">
+                          <span>English</span>
+                          <span>78%</span>
+                        </div>
+                        <div class="h-4 neubrutalism bg-gray-200">
+                          <div class="h-full bg-teal-primary" style="width: 78%"></div>
+                        </div>
+                      </div>
+                      <div>
+                        <div class="flex justify-between mb-1">
+                          <span>History</span>
+                          <span>90%</span>
+                        </div>
+                        <div class="h-4 neubrutalism bg-gray-200">
+                          <div class="h-full bg-teal-primary" style="width: 90%"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="neubrutalism bg-gray-100 p-4">
+                  <h5 class="font-bold mb-2">Quarterly Trend</h5>
+                  <div class="chart-container" id="trend-chart">
+                    <div class="h-full flex items-end space-x-4">
+                      <div class="flex-1 flex flex-col items-center">
+                        <div class="w-full neubrutalism bg-teal-primary mb-2" style="height: 50%"></div>
+                        <span>Q1</span>
+                      </div>
+                      <div class="flex-1 flex flex-col items-center">
+                        <div class="w-full neubrutalism bg-teal-primary mb-2" style="height: 65%"></div>
+                        <span>Q2</span>
+                      </div>
+                      <div class="flex-1 flex flex-col items-center">
+                        <div class="w-full neubrutalism bg-teal-primary mb-2" style="height: 75%"></div>
+                        <span>Q3</span>
+                      </div>
+                      <div class="flex-1 flex flex-col items-center">
+                        <div class="w-full neubrutalism bg-teal-primary mb-2" style="height: 85%"></div>
+                        <span>Q4 (Predicted)</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recommendations -->
+          <div class="neubrutalism bg-teal-primary text-white p-6 mb-8">
+            <h3 class="text-xl font-bold mb-4">Personalized Recommendations</h3>
+            <ul class="space-y-3" id="recommendations-list">
+              <li class="flex items-start">
+                <i class="bi bi-check-circle-fill mr-2 mt-1"></i>
+                <span>Consider enrolling in advanced math courses based on strong performance in this area.</span>
+              </li>
+              <li class="flex items-start">
+                <i class="bi bi-check-circle-fill mr-2 mt-1"></i>
+                <span>Implement visual learning aids to better match student's learning style.</span>
+              </li>
+              <li class="flex items-start">
+                <i class="bi bi-check-circle-fill mr-2 mt-1"></i>
+                <span>Schedule bi-weekly check-ins to maintain high engagement levels.</span>
+              </li>
+              <li class="flex items-start">
+                <i class="bi bi-check-circle-fill mr-2 mt-1"></i>
+                <span>Provide additional support in English with targeted interventions.</span>
+              </li>
+            </ul>
+            <div class="mt-6 flex space-x-4">
+              <button class="neubrutalism-button bg-white text-teal-primary px-4 py-2 font-bold">
+                Email Recommendations
+              </button>
+              <button class="neubrutalism-button bg-white text-teal-primary px-4 py-2 font-bold">
+                Print Report
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-teal-primary text-white p-4 neubrutalism mt-8">
+      <div class="container mx-auto text-center">
+        <p>© 2023 EduPredict - Student Performance Prediction System</p>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const predictButton = document.getElementById('predict-button');
+      const predictionResults = document.getElementById('prediction-results');
+      
+      predictButton.addEventListener('click', function() {
+        // Validate inputs
+        const studentId = document.getElementById('student-id').value;
+        const gradeLevel = document.getElementById('grade-level').value;
+        const attendance = document.getElementById('attendance').value;
+        const homeworkCompletion = document.getElementById('homework-completion').value;
+        const previousGpa = document.getElementById('previous-gpa').value;
+        
+        if (!studentId || !gradeLevel || !attendance || !homeworkCompletion || !previousGpa) {
+          alert('Please fill in all required fields');
+          return;
+        }
+        
+        // Calculate predicted GPA based on inputs
+        const attendanceRate = parseFloat(attendance);
+        const homeworkRate = parseFloat(homeworkCompletion);
+        const prevGPA = parseFloat(previousGpa);
+        const behaviorIncidents = parseFloat(document.getElementById('behavior-incidents').value) || 0;
+        
+        // Simple prediction algorithm (in a real app, this would be more sophisticated)
+        let predictedGpa = prevGPA;
+        
+        if (attendanceRate > 90) predictedGpa += 0.2;
+        else if (attendanceRate < 70) predictedGpa -= 0.3;
+        
+        if (homeworkRate > 90) predictedGpa += 0.3;
+        else if (homeworkRate < 70) predictedGpa -= 0.2;
+        
+        if (behaviorIncidents > 5) predictedGpa -= 0.4;
+        
+        // Cap GPA at 4.0
+        predictedGpa = Math.min(4.0, Math.max(0, predictedGpa));
+        
+        // Determine risk level
+        let riskLevel, riskClass;
+        if (predictedGpa >= 3.5) {
+          riskLevel = "Low Risk";
+          riskClass = "bg-green-500";
+        } else if (predictedGpa >= 2.5) {
+          riskLevel = "Medium Risk";
+          riskClass = "bg-yellow-500";
+        } else {
+          riskLevel = "High Risk";
+          riskClass = "bg-red-500";
+        }
+        
+        // Update the UI with predictions
+        document.getElementById('predicted-gpa').textContent = predictedGpa.toFixed(2);
+        
+        const riskElement = document.getElementById('risk-level');
+        riskElement.textContent = riskLevel;
+        riskElement.className = "font-bold px-2 py-1 text-white neubrutalism-button " + riskClass;
+        
+        // Calculate confidence score
+        const confidenceScore = Math.floor(85 - (Math.abs(prevGPA - predictedGpa) * 10));
+        document.getElementById('confidence-score').textContent = confidenceScore + '%';
+        
+        // Determine engagement level
+        let engagement;
+        if (attendanceRate > 90 && homeworkRate > 85) {
+          engagement = "High";
+        } else if (attendanceRate > 75 && homeworkRate > 70) {
+          engagement = "Medium";
+        } else {
+          engagement = "Low";
+        }
+        document.getElementById('engagement-level').textContent = engagement;
+        
+        // Calculate dropout risk
+        const dropoutRisk = Math.max(5, 100 - (attendanceRate * 0.7 + homeworkRate * 0.3));
+        document.getElementById('dropout-risk').textContent = dropoutRisk.toFixed(0) + '%';
+        
+        // Determine attendance trend
+        let attendanceTrend;
+        if (attendanceRate > 90) {
+          attendanceTrend = "Excellent";
+        } else if (attendanceRate > 80) {
+          attendanceTrend = "Good";
+        } else if (attendanceRate > 70) {
+          attendanceTrend = "Stable";
+        } else {
+          attendanceTrend = "Concerning";
+        }
+        document.getElementById('attendance-trend').textContent = attendanceTrend;
+        
+        // Generate recommendations based on the data
+        const recommendationsList = document.getElementById('recommendations-list');
+        recommendationsList.innerHTML = '';
+        
+        // Add tailored recommendations
+        const recommendations = [];
+        
+        const learningStyle = document.getElementById('learning-style').value;
+        if (learningStyle) {
+          let styleRec;
+          switch(learningStyle) {
+            case 'visual':
+              styleRec = "Provide visual learning materials such as diagrams, charts, and videos.";
+              break;
+            case 'auditory':
+              styleRec = "Incorporate audio materials, discussions, and verbal explanations in learning.";
+              break;
+            case 'reading':
+              styleRec = "Assign reading materials and writing exercises to enhance learning.";
+              break;
+            case 'kinesthetic':
+              styleRec = "Include hands-on activities and physical movement in learning activities.";
+              break;
+          }
+          recommendations.push(styleRec);
+        }
+        
+        if (predictedGpa < prevGPA) {
+          recommendations.push("Schedule additional tutoring sessions to address the predicted drop in performance.");
+        }
+        
+        if (attendanceRate < 80) {
+          recommendations.push("Implement attendance improvement plan with daily check-ins.");
+        }
+        
+        if (homeworkRate < 75) {
+          recommendations.push("Create a homework completion schedule with regular reminders and rewards.");
+        }
+        
+        if (behaviorIncidents > 3) {
+          recommendations.push("Consider behavioral intervention strategies and regular counseling sessions.");
+        }
+        
+        // If we have a good student, add positive recommendations
+        if (predictedGpa > 3.0) {
+          recommendations.push("Consider enrolling in advanced courses or extracurricular academic activities.");
+        }
+        
+        // Add recommendations to the list
+        recommendations.forEach(rec => {
+          const li = document.createElement('li');
+          li.className = "flex items-start";
+          li.innerHTML = `<i class="bi bi-check-circle-fill mr-2 mt-1"></i><span>${rec}</span>`;
+          recommendationsList.appendChild(li);
+        });
+        
+        // Show results section
+        predictionResults.classList.remove('hidden');
+        
+        // Scroll to the results
+        predictionResults.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
+<script>document.body.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); return }, { passive: false })</script>
+	</body>
+</html>
